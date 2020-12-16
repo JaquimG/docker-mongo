@@ -1,0 +1,22 @@
+version: "3.3"
+services:
+   mongo:
+      image: mongo
+      restart: always
+      container_name: "mymongodb"
+      ports:
+      - 27017:27017
+      environment:
+        AUTH: 0
+      volumes:
+      - ./db/data:/var/lib/mongo
+   demo:
+    image: demo
+    build: .
+    container_name: demo
+    ports:
+     - 8080:8080
+    links:
+     - mongo
+    environment:
+     SPRING_DATA_MONGODB_URI: mongodb://mongo/mymongodb
